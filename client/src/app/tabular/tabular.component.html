@@ -1,0 +1,19 @@
+<app-user-add (updatedData)="onUpdatedData()"></app-user-add>
+<table class="table_tag">
+    <tr><th *ngFor="let head of header">{{head}}</th></tr>
+    <tr *ngFor="let data of userData">
+        <td><input type="text" name="first_name" [value]="data.first_name" disabled></td>
+        <td><input type="text" name="middle_name" [value]="data.middle_name" disabled></td>
+        <td><input type="text" name="last_name" [value]="data.last_name" disabled></td>
+        <td><input type="email" name="email" [value]="data.email" disabled></td>
+        <td><input type="number" name="phone_number" [value]="data.phone_number" disabled></td>
+        <td><input type="text" name="address" [value]="data.address" disabled></td>
+        <td><input type="text" name="role" [value]="data.role.name" disabled></td>
+        <td><input type="text" name="customer" [value]="data.customer.name" disabled></td>
+        <td><input type="text" name="createdDate" [value]="data.createdAt | dateformat" disabled></td>
+        <td>
+            <input type="button" class="btn" (click)="saveEnable ? onSave($event,data) : onEdit($event)" value="Edit">
+            <input type="button" class="btn-danger" (click)="saveEnable ? onCancel($event) : onDelete(data)" value="Delete">
+        </td>
+    </tr>
+</table>
