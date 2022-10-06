@@ -9,6 +9,7 @@ export interface UserModel{
     customer:{name:string},
     address: string,
     createdAt: string,
+    saveEnable:boolean
 }
 
 export interface patchUserModel{
