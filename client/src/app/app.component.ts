@@ -17,7 +17,7 @@ export class AppComponent {
   onLoadData(){
     this.loadButton = "Refresh data";
     this.showTable = true;
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers().pipe(take(1)).subscribe(
       responseData=>{
         this.userData = responseData;
       }
