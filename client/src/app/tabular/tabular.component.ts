@@ -8,6 +8,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./tabular.component.css']
 })
 export class TabularComponent implements OnInit {
+
   prevArray:string[] = [];
   @Input ('userdata') userData:UserModel[];
   saveEnable = false;
@@ -21,27 +22,30 @@ export class TabularComponent implements OnInit {
   onUpdatedData(){
     this.userService.getUsers().subscribe(newData=>{
       this.userData = newData;
+      for(let i=0;i<this.userData.length;i++){
+        this.userData[i].saveEnable=false; 
+      }
+      
     });
   }
 
-  onEdit(event:any){
-    event.path[0].value = "Save";
-    event.path[1].childNodes[1].value = "Cancel";
+  onEdit(event:any,i:number){
+    this.saveEnable=true;
     for(let j=0;j<event.path[2].cells.length-4;j++){
-      event.path[2].cells[j].childNodes[0].disabled = false;
+      this.userData[i].saveEnable=true;
+      
       this.prevArray.push(event.path[2].cells[j].childNodes[0].value);
     }
     this.saveEnable = true
   }
   
-  onSave(event:any,data:UserModel){
+  onSave(event:any,data:UserModel,i:number){
     this.saveEnable = false;
     let editData: {[key: string]: string|number}={};
-    event.path[0].value = "Edit";
-    event.path[1].childNodes[1].value = "Delete";
     let j:number=0;
     for(j=0;j<event.path[2].cells.length-4;j++){
-      event.path[2].cells[j].childNodes[0].disabled = true;
+      this.userData[i].saveEnable=false;
+
       editData[event.path[2].cells[j].childNodes[0].name]=event.path[2].cells[j].childNodes[0].value;
       this.prevArray[j]=event.path[2].cells[j].childNodes[0].value;
     }
@@ -54,13 +58,10 @@ export class TabularComponent implements OnInit {
 
   }
 
-  onCancel(event:any){
-    this.saveEnable = false;
-    event.path[0].value = "Delete";
-    event.path[1].childNodes[0].value = "Edit";
+  onCancel(event:any,i:number){
     let j:number=0;
     for(j=0;j<event.path[2].cells.length-4;j++){
-      event.path[2].cells[j].childNodes[0].disabled = true;
+      this.userData[i].saveEnable=false;
       event.path[2].cells[j].childNodes[0].value = this.prevArray[j];
     }
   }
